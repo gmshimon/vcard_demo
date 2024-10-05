@@ -23,5 +23,8 @@
     "validator": "^13.12.0",
     "vcard-creator": "^0.7.1",
     "vcf-card_nodejs": "file:"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7"
   }
 }

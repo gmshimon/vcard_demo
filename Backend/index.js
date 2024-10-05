@@ -11,9 +11,9 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-const uri = "mongodb+srv://vcard_user:Kola9696@cluster0.in8lp.mongodb.net/vcard_demo?retryWrites=true&w=majority&appName=Cluster0";
+// const uri = "mongodb+srv://vcard_user:Kola9696@cluster0.in8lp.mongodb.net/vcard_demo?retryWrites=true&w=majority&appName=Cluster0";
 
-// const uri = 'mongodb://localhost:27017/vcard_demo'
+const uri = 'mongodb://localhost:27017/vcard_demo'
 
 mongoose.connect(uri).then(() => {
   console.log('Database connected successfully')
