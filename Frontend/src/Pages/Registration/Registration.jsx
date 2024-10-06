@@ -1,8 +1,12 @@
+import { useState } from 'react'
 import { FaGoogle } from 'react-icons/fa'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import { Link } from 'react-router-dom'
 
 const Registration = () => {
+  const [checked,setChecked] =useState(false)
+
   return (
     <section className='h-screen lg:flex'>
       <div className='lg:w-1/2 '>
@@ -80,7 +84,6 @@ const Registration = () => {
                 />
               </label>
             </div>
-
             <div className='mb-3'>
               <label htmlFor='phone' className='ml-1 block'>
                 <span className='text-gray-700'>Phone:</span>
@@ -147,16 +150,26 @@ const Registration = () => {
                 />
               </label>
             </div>
-            <button className='btn btn-info text-white w-full mt-5 mb-3'>
-              Login
+            <div className='mt-4 w-grow'>
+              <label className='flex items-center cursor-pointer'>
+                <input type='checkbox' onChange={e=>setChecked(e.target.checked)} className='checkbox mr-1' />
+                <span className='text-sm'>By signing up you agree to our <span className='text-blue-500 hover:text-blue-800 cursor-pointer'>Terms & Conditions</span> & <span className='text-blue-500 hover:text-blue-800 cursor-pointer'>Privacy Policy</span></span>
+              </label>
+            </div>
+            <button disabled={!checked} className='btn btn-info text-white w-full mt-5 mb-3'>
+              Register
             </button>
 
-            <span>
-              New Here?{' '}
-              <span className='ml-1 text-blue-500 hover:text-blue-800 cursor-pointer'>
-                Create Account
+            <div className='text-center'>
+              <span>
+                Already have an account?{' '}
+                <Link to='/login'>
+                  <span className='ml-1 text-blue-500 hover:text-blue-800 cursor-pointer'>
+                    Sign in here
+                  </span>
+                </Link>
               </span>
-            </span>
+            </div>
 
             <button className='btn btn-error text-white w-full mt-5 mb-3'>
               <FaGoogle /> Login via Google
