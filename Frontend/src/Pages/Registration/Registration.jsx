@@ -1,4 +1,6 @@
 import { FaGoogle } from 'react-icons/fa'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const Registration = () => {
   return (
@@ -20,7 +22,9 @@ const Registration = () => {
           </div>
           <h1 className='text-xl font-semibold'>vCard Builder</h1>
         </div>
-        <h1 className='text-center text-xl font-semibold mt-4'>Sign Up</h1>
+        <h1 className='text-center text-xl font-semibold mt-4'>
+          Create an account
+        </h1>
         <div className='flex justify-center mt-5'>
           <div className='w-2/3'>
             <div>
@@ -75,6 +79,39 @@ const Registration = () => {
                   placeholder='Email'
                 />
               </label>
+            </div>
+
+            <div className='mb-3'>
+              <label htmlFor='phone' className='ml-1 block'>
+                <span className='text-gray-700'>Phone:</span>
+                <span className='text-error font-bold ml-1'>*</span>
+              </label>
+              <PhoneInput
+                country={'my'} // Default country code
+                inputProps={{
+                  name: 'phone',
+                  required: true,
+                  autoFocus: true
+                }}
+                containerStyle={{
+                  width: '100%'
+                }}
+                inputStyle={{
+                  width: '100%',
+                  height: '40px',
+                  borderRadius: '10px',
+                  border: '1px solid #ccc',
+                  paddingLeft: '50px',
+                  paddingTop: '23px',
+                  paddingBottom: '23px'
+                }}
+                buttonStyle={{
+                  borderRadius: '4px 0 0 4px'
+                }}
+                dropdownStyle={{
+                  borderRadius: '0 0 4px 4px'
+                }}
+              />
             </div>
             <div>
               <div className='flex justify-between'>
