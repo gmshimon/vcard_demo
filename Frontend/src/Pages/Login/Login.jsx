@@ -1,4 +1,5 @@
 import { FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -70,7 +71,7 @@ const Login = () => {
             </label>
             <button className="btn btn-info text-white w-full mt-5 mb-3">Login</button>
 
-            <span >New Here? <span className="ml-1 text-blue-500 hover:text-blue-800 cursor-pointer">Create Account</span></span>
+            <span >New Here?  <Link to="/register"><span className="ml-1 text-blue-500 hover:text-blue-800 cursor-pointer">Create Account</span></Link> </span>
             
             <button className="btn btn-error text-white w-full mt-5 mb-3"><FaGoogle/> Login via Google</button>
 
