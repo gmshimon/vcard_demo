@@ -14,18 +14,8 @@ const userSchema = mongoose.Schema({
     lowercase: true,
     unique: [true,"Account with this email exists"]
   },
-  password:{
-    type: String,
-    required: [true, 'Please provide the password'],
-    validator: value => {
-      validator.isStrongPassword(value, {
-        minLength: 6
-      })
-    }
-  },
   phone:{
     type:String,
-    required: true,
   },
   role: {
     type:String,
@@ -41,19 +31,6 @@ const userSchema = mongoose.Schema({
 },{
     timestamps: true
 })
-
-userSchema.pre('save', function (next) {
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(this.password, salt, (err, hash) => {
-      if (!err) {
-        this.password = hash
-        next()
-      }
-      if (err) console.log(err);
-    })
-  })
-})
-
 
 const Users = mongoose.model('Users',userSchema);
 

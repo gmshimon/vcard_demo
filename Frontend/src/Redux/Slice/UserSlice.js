@@ -1,9 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axiosInstance from '../../utilis/axios'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile
+} from 'firebase/auth'
 import auth from '../../Firebase/firebase.config'
-import { GoogleAuthProvider } from 'firebase/auth/web-extension'
 
 const initialState = {
   user: null,
@@ -36,11 +42,12 @@ export const saveUserData = async userData => {
 
 export const loginUser = createAsyncThunk(
   'loginUser',
-  async ({ email, password }) => {
+  async ({ email, password, phone }) => {
     const res = await signInWithEmailAndPassword(auth, email, password)
     const data = await saveUserData({
       name: res?.user?.displayName,
-      email: res?.user?.email
+      email: res?.user?.email,
+      phone: phone
     })
     return data
   }
@@ -48,14 +55,15 @@ export const loginUser = createAsyncThunk(
 
 export const createUser = createAsyncThunk(
   'createUser',
-  async ({ name, email, password }) => {
+  async ({ name, email, password, phone }) => {
     const res = await createUserWithEmailAndPassword(auth, email, password)
-    const result = updateProfile(auth.currentUser, {
+    const result = await updateProfile(auth.currentUser, {
       displayName: name
     })
     const data = await saveUserData({
-      name: result?.user?.displayName,
-      email: result?.user?.email
+      name: name,
+      email: res?.user?.email,
+      phone: phone
     })
     return data
   }
@@ -96,61 +104,60 @@ const userSlice = createSlice({
       state.isLoading = action.payload
     }
   },
-  extraReducers:builder=> {
+  extraReducers: builder => {
     builder
-    .addCase(loginUser.pending, state => {
-      state.isLoginLoading = true
-      state.isLoginError = false
-      state.isLoginSuccess = false
-    })
-    .addCase(loginUser.fulfilled, (state, action) => {
-      state.user = action.payload
-      state.isLoginLoading = false
-      state.isLoginSuccess = true
-      state.isLoginError = false
-    })
-    .addCase(loginUser.rejected, (state, action) => {
-      state.isLoginLoading = false
-      state.isLoginError = true
-      state.isLoginSuccess = false
-    })
-    .addCase(createUser.pending,(state)=>{
+      .addCase(loginUser.pending, state => {
         state.isLoginLoading = true
         state.isLoginError = false
         state.isLoginSuccess = false
-    })
-    .addCase(createUser.fulfilled,(state, action)=>{
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.user = action.payload
+        state.isLoginLoading = false
+        state.isLoginSuccess = true
+        state.isLoginError = false
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoginLoading = false
+        state.isLoginError = true
+        state.isLoginSuccess = false
+      })
+      .addCase(createUser.pending, state => {
+        state.isLoginLoading = true
+        state.isLoginError = false
+        state.isLoginSuccess = false
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
         state.isLoginLoading = false
         state.isLoginError = false
         state.isLoginSuccess = true
         state.user = action.payload
-    })
-    .addCase(createUser.rejected,(state, action)=>{
+      })
+      .addCase(createUser.rejected, (state, action) => {
         state.isLoginLoading = false
         state.isLoginError = true
         state.isLoginSuccess = false
-    })
-    .addCase(logOut.fulfilled, (state, action) => {
-      state.user = null
-    })
-    .addCase(logOut.rejected, (state, action) => {
-    })
-    .addCase(loginWithGoogle.pending, state => {
-      state.isLoginWithGoogleLoading = true
-      state.isLoginWithGoogleError = false
-      state.isLoginWithGoogleSuccess = false
-    })
-    .addCase(loginWithGoogle.fulfilled, (state, action) => {
-      state.user = action.payload
-      state.isLoginWithGoogleLoading = false
-      state.isLoginWithGoogleSuccess = true
-      state.isLoginWithGoogleError = false
-    })
-    .addCase(loginWithGoogle.rejected, (state, action) => {
-      state.isLoginWithGoogleLoading = false
-      state.isLoginWithGoogleError = true
-      state.isLoginWithGoogleSuccess = false
-    })
+      })
+      .addCase(logOut.fulfilled, (state, action) => {
+        state.user = null
+      })
+      .addCase(logOut.rejected, (state, action) => {})
+      .addCase(loginWithGoogle.pending, state => {
+        state.isLoginWithGoogleLoading = true
+        state.isLoginWithGoogleError = false
+        state.isLoginWithGoogleSuccess = false
+      })
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
+        state.user = action.payload
+        state.isLoginWithGoogleLoading = false
+        state.isLoginWithGoogleSuccess = true
+        state.isLoginWithGoogleError = false
+      })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
+        state.isLoginWithGoogleLoading = false
+        state.isLoginWithGoogleError = true
+        state.isLoginWithGoogleSuccess = false
+      })
   }
 })
 

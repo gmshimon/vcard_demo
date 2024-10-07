@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const generateVCard = require('../../Middleware/vcard/vcard')
 const { generateToken } = require('../../Middleware/Token/generateToken')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
 
 const deleteImage = file => {
   const filePath = path.join(__dirname, '../../images', file)
@@ -26,7 +26,41 @@ const deleteVCard = file => {
   })
 }
 
-module.exports.registerUser = async(req,res,next)=>{
+module.exports.saveUserData = async (req, res, next) => {
+  try {
+    const userData = req.body
+    const { name, email, role } = userData
+
+    const user = await Users.findOne({ email })
+    if (user) {
+      const { accessToken } = generateToken(user)
+
+      return res.status(200).json({
+        status: 'Success',
+        message: 'User already exists',
+        data: user,
+        token: accessToken
+      })
+    }else{
+      const result = await Users.create(userData);
+      const {accessToken} = generateToken(result)
+
+      return res.status(200).json({
+        data:'status',
+        message: 'User successfully registered',
+        data: result,
+        token: accessToken
+      })
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: 'Failed',
+      message: error
+    })
+  }
+}
+
+module.exports.registerUser = async (req, res, next) => {
   try {
     const data = req.body
     const result = await Users.create(data)
@@ -44,9 +78,9 @@ module.exports.registerUser = async(req,res,next)=>{
   }
 }
 
-module.exports.loginUser = async(req,res,next)=>{
+module.exports.loginUser = async (req, res, next) => {
   try {
-    const{email,pass} = req.body
+    const { email, pass } = req.body
 
     if (!email || !pass) {
       return res.status(403).json({
@@ -71,16 +105,15 @@ module.exports.loginUser = async(req,res,next)=>{
       })
     }
 
-    const {accessToken} = generateToken(user)
-    
-    const{password,...others} = user.toObject()
+    const { accessToken } = generateToken(user)
+
+    const { password, ...others } = user.toObject()
     res.status(200).json({
       status: 'Success',
       message: 'Login successful',
       data: others,
-      accessToken: accessToken,
+      accessToken: accessToken
     })
-
   } catch (error) {
     res.status(400).json({
       status: 'Fail',

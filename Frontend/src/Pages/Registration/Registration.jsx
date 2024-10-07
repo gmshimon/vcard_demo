@@ -1,15 +1,48 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaGoogle } from 'react-icons/fa'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { createUser, reset } from '../../Redux/Slice/UserSlice'
+import Swal from 'sweetalert2'
 
 const Registration = () => {
+  const {isLoginSuccess,isCreateUserError} = useSelector(state=>state.user)
   const [checked,setChecked] =useState(false)
   const [name,setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
   const [password, setPassword] = useState("")
+
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    if(isLoginSuccess){
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Successfully registered and logged in",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      dispatch(reset())
+    }
+    if(isCreateUserError){
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Failed to register, please try again",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      dispatch(reset())
+    }
+    setName("");
+    setEmail("");
+    setPhone("");
+    setPassword("");
+  },[dispatch, isCreateUserError, isLoginSuccess])
 
   const handleRegister = ()=>{
     const data ={
@@ -18,8 +51,7 @@ const Registration = () => {
       phone,
       password,
     }
-
-    console.log(data)
+    dispatch(createUser(data))
   }
 
   return (
@@ -69,6 +101,7 @@ const Registration = () => {
                   className='grow'
                   name='name'
                   placeholder='Name'
+                  value={name}
                   onChange={e=>setName(e.target.value)}
                 />
               </label>
@@ -97,6 +130,7 @@ const Registration = () => {
                   className='grow'
                   name='email'
                   placeholder='Email'
+                  value={email}
                   onChange={e=>setEmail(e.target.value)}
                 />
               </label>
@@ -108,7 +142,6 @@ const Registration = () => {
               </label>
               <PhoneInput
                 country={'my'} // Default country code
-                value={phone}
                 onChange={e=>setPhone(e)}
                 inputProps={{
                   name: 'phone',
@@ -166,6 +199,7 @@ const Registration = () => {
                   className='grow'
                   name='password'
                   placeholder='Password'
+                  value={password}
                   onChange={e=>setPassword(e.target.value)}
                 />
               </label>
