@@ -6,6 +6,21 @@ import { Link } from 'react-router-dom'
 
 const Registration = () => {
   const [checked,setChecked] =useState(false)
+  const [name,setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleRegister = ()=>{
+    const data ={
+      name,
+      email,
+      phone,
+      password,
+    }
+
+    console.log(data)
+  }
 
   return (
     <section className='h-screen lg:flex'>
@@ -54,6 +69,7 @@ const Registration = () => {
                   className='grow'
                   name='name'
                   placeholder='Name'
+                  onChange={e=>setName(e.target.value)}
                 />
               </label>
             </div>
@@ -81,6 +97,7 @@ const Registration = () => {
                   className='grow'
                   name='email'
                   placeholder='Email'
+                  onChange={e=>setEmail(e.target.value)}
                 />
               </label>
             </div>
@@ -91,6 +108,8 @@ const Registration = () => {
               </label>
               <PhoneInput
                 country={'my'} // Default country code
+                value={phone}
+                onChange={e=>setPhone(e)}
                 inputProps={{
                   name: 'phone',
                   required: true,
@@ -147,6 +166,7 @@ const Registration = () => {
                   className='grow'
                   name='password'
                   placeholder='Password'
+                  onChange={e=>setPassword(e.target.value)}
                 />
               </label>
             </div>
@@ -156,7 +176,7 @@ const Registration = () => {
                 <span className='text-sm'>By signing up you agree to our <span className='text-blue-500 hover:text-blue-800 cursor-pointer'>Terms & Conditions</span> & <span className='text-blue-500 hover:text-blue-800 cursor-pointer'>Privacy Policy</span></span>
               </label>
             </div>
-            <button disabled={!checked} className='btn btn-info text-white w-full mt-5 mb-3'>
+            <button onClick={handleRegister} disabled={!checked} className='btn btn-info text-white w-full mt-5 mb-3'>
               Register
             </button>
 
