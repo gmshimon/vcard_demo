@@ -1,9 +1,10 @@
+import AdminDashboard from "../AdminDashboard/AdminDashboard";
 
 
 const Home = () => {
     return (
         <div>
-            <h1>g</h1>
+            <AdminDashboard/>
         </div>
     );
 };

@@ -28,7 +28,7 @@ const Navbar = () => {
     ]
   return (
     <section className='lg:flex'>
-      <div className='w-full'>
+      <div>
         <div className='drawer lg:drawer-open'>
           <input id='my-drawer-3' type='checkbox' className='drawer-toggle' />
           <div className='drawer-content flex flex-col'>
@@ -58,7 +58,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className='drawer-side'>
+          <div className='drawer-side lg:relative absolute lg:static z-40'>
             <label
               htmlFor='my-drawer-3'
               aria-label='close sidebar'
@@ -69,7 +69,7 @@ const Navbar = () => {
               <div className='flex justify-center items-center'>
                 <img
                   src='https://infyvcards-demo.nyc3.digitaloceanspaces.com/settings/9168/Logo-1.png'
-                  alt=''
+                  alt='vCard logo'
                 />
                 <p className='ml-4 text-xl font-semibold'>vCard</p>
               </div>
@@ -99,8 +99,6 @@ const Navbar = () => {
                                 <p className='mr-5'>{nav?.icon}</p>
                                 <p >{nav?.title}</p>
                             </div>
-                            {/* <p >  </p>
-                             */}
                         </NavLink>
                     </li>)
                 }
